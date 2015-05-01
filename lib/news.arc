@@ -1,23 +1,21 @@
-; things to customize
+; News.  2 Sep 06.
+
+; to run news: (nsv), then go to http://localhost:8080
+; put usernames of admins, separated by whitespace, in arc/admins
+
+; bug: somehow (+ votedir* nil) is getting evaluated.
+
 (declare 'atstrings t)
 
-(= this-site*    "My Forum"
-   site-url*     "http://news.yourdomain.com/"
-   parent-url*   "http://www.yourdomain.com"
-   favicon-url*  ""
-   site-desc*    "What this site is about."               ; for rss feed
-   site-color*   (color 180 180 180)
+(= this-site*    "Fedora News"
+   site-url*     "http://news.fdzh.org/"
+   parent-url*   "http://www.fdzh.org"
+   favicon-url*  "http://fedoraproject.org/favicon.ico"
+   site-desc*    "about fedora."               ; for rss feed
+   site-color*   (color 110 195 201)
    border-color* (color 180 180 180)
    prefer-url*   t)
 
-; these settings might improve performance when you need it
-
-;(= static-max-age* 7200)    ; browsers can cache static files for 7200 sec
-
-;(declare 'direct-calls t)   ; you promise not to redefine fns as tables
-
-;(declare 'explicit-flush t) ; you take responsibility for flushing output
-                            ; (all existing news code already does)
 
 ; Structures
 
@@ -33,7 +31,7 @@
   member     nil
   submitted  nil
   votes      nil   ; for now just recent, elts each (time id by sitename dir)
-  karma      1
+  karma      10
   avg        nil
   weight     .5
   ignore     nil
@@ -383,7 +381,7 @@
 
 ; Page Layout
 
-(= up-url* "grayarrow.gif" down-url* "graydown.gif" logo-url* "arc.png")
+(= up-url* "grayarrow.png" down-url* "graydown.gif" logo-url* "arc.png")
 
 (defopr favicon.ico req favicon-url*)
 
@@ -399,10 +397,13 @@
        (tag script (pr votejs*))
        (tag title (pr ,title)))
      (tag body
+
        (center
          (tag (table border 0 cellpadding 0 cellspacing 0 width "85%"
                      bgcolor sand)
-           ,@body)))))
+           ,@body)
+(prn "<a href='http://star.fdzh.org/p/401/'>FAQ</a>  All rights belong to GOD")
+        ))))
 
 (= pagefns* nil)
 
@@ -465,22 +466,22 @@
 
 (defop news.css req
   (pr "
-body  { font-family:Verdana; font-size:10pt; color:#828282; }
-td    { font-family:Verdana; font-size:10pt; color:#828282; }
+body  { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#828282;width:780px; margin:6px auto;  }
+td    { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#828282; padding-left:3px;}
 
 .admin td   { font-family:Verdana; font-size:8.5pt; color:#000000; }
 .subtext td { font-family:Verdana; font-size:  7pt; color:#828282; }
 
-input    { font-family:Courier; font-size:10pt; color:#000000; }
+input    { font-family:Courier; font-size:12pt; color:#000000; }
 input[type=\"submit\"] { font-family:Verdana; }
-textarea { font-family:Courier; font-size:10pt; color:#000000; }
+textarea { font-family:Courier; font-size:12pt; color:#000000; }
 
 a:link    { color:#000000; text-decoration:none; }
 a:visited { color:#828282; text-decoration:none; }
 
 .default { font-family:Verdana; font-size: 10pt; color:#828282; }
-.admin   { font-family:Verdana; font-size:8.5pt; color:#000000; }
-.title   { font-family:Verdana; font-size: 10pt; color:#828282; }
+.admin   { font-family:Verdana; font-size:  9pt; color:#000000; }
+.title   { font-family:Verdana; font-size: 11pt; color:#828282; }
 .adtitle { font-family:Verdana; font-size:  9pt; color:#828282; }
 .subtext { font-family:Verdana; font-size:  7pt; color:#828282; }
 .yclinks { font-family:Verdana; font-size:  8pt; color:#828282; }
@@ -573,7 +574,7 @@ function vote(node) {
                     style "padding:2px")
           (tr (gen-logo)
               (when (is switch 'full)
-                (tag (td style "line-height:12pt; height:10px;")
+                (tag (td style "line-height:20pt; height:30px;")
                   (spanclass pagetop
                     (tag b (link this-site* "news"))
                     (hspace 10)
@@ -581,7 +582,7 @@ function vote(node) {
              (if (is switch 'full)
                (tag (td style "text-align:right;padding-right:4px;")
                  (spanclass pagetop (topright user whence)))
-               (tag (td style "line-height:12pt; height:10px;")
+               (tag (td style "line-height:20pt; height:30px;")
                  (spanclass pagetop (prbold label))))))))
   (map [_ user] pagefns*)
   (spacerow 10))
@@ -592,7 +593,7 @@ function vote(node) {
       (tag (img src logo-url* width 18 height 18
                 style "border:1px #@(hexrep border-color*) solid;")))))
 
-(= toplabels* '(nil "welcome" "new" "threads" "comments" "leaders" "*"))
+(= toplabels* '(nil "welcome" "new" "ask" "threads" "comments" "official" "leaders" "*"))
 
 (= welcome-url* "welcome")
 
@@ -601,9 +602,11 @@ function vote(node) {
     (when (noob user)
       (toplink "welcome" welcome-url* label))
     (toplink "new" "newest" label)
+    (toplink "ask" "ask" label)
     (when user
       (toplink "threads" (threads-url user) label))
     (toplink "comments" "newcomments" label)
+    (toplink "official" "official" label)
     (toplink "leaders"  "leaders"     label)
     (hook 'toprow user label)
     (link "submit")
@@ -624,7 +627,7 @@ function vote(node) {
       (when-umatch/r user req
         (logout-user user)
         whence))
-    (onlink "login"
+    (onlink "join"
       (login-page nil
                   (list (fn (u ip)
                           (ensure-news-user u)
@@ -806,7 +809,7 @@ function vote(node) {
   (tostring (underlink "reset password" "resetpw")))
 
 (newsop welcome ()
-  (pr "Welcome to " this-site* ", " user "!"))
+  (pr "Welcome to " this-site* ", " user ",HAVE FUN! __________ FREEDOM. FRIENDS. FEATURES. FIRST."))
 
 
 ; Main Operators
@@ -845,6 +848,18 @@ function vote(node) {
 
 
 (newsop newest () (newestpage user))
+
+(newsop official ()
+  (listpage user (msec) (keep showpage-filter ranked-stories*) "officail" nil))
+
+(def showpage-filter (s)
+  (and (astory s) (begins (downcase s!title) "official:")))
+
+(newsop ask ()
+  (listpage user (msec) (keep askpage-filter ranked-stories*) "ask" nil))
+
+(def askpage-filter (s)
+  (and (astory s) (blank s!url) (begins (downcase s!title) "ask:")))
 
 ; Note: dead/deleted items will persist for the remaining life of the
 ; cached page.  If this were a prob, could make deletion clear caches.
@@ -1015,7 +1030,8 @@ function vote(node) {
                      (or (live s) (author user s) (editor user))
                       url)
             rel  (unless (or toself (> (realscore s) follow-threshold*))
-                   'nofollow))
+                    'nofollow)
+                  target '_blank)
       (pr s!title))))
 
 (def pdflink (url)
@@ -1459,8 +1475,8 @@ function vote(node) {
     (submit-page user u t)
     (submit-login-warning u t)))
 
-(= title-limit* 80
-   retry*       "Please try again."
+(= title-limit* 100
+   retry*       "Please try again.url must add http://"
    toolong*     "Please make title < @title-limit* characters."
    bothblank*   "The url and text fields can't both be blank.  Please
                  either supply a url, or if you're asking a question,
@@ -2141,7 +2157,7 @@ function vote(node) {
     (if (only.comments-active i)
       (if user
           (addcomment-page i user whence)
-          (login-page "You have to be logged in to comment."
+          (login-page "You have to be logged in to comment.请先注册一下吧。"
                       (fn (u ip)
                         (ensure-news-user u)
                         (newslog ip u 'comment-login)
@@ -2610,5 +2626,4 @@ first asterisk isn't whitespace.
     (tab
       (each c (dedup (map downcase (trues [uvar _ topcolor] (users))))
         (tr (td c) (tdcolor (hex>color c) (hspace 30)))))))
-
 
