@@ -501,7 +501,7 @@ a:visited { color:#828282; text-decoration:none; }
 
 .comment a:link, .comment a:visited { text-decoration:underline;}
 .dead a:link, .dead a:visited { color:#dddddd; }
-.pagetop a:visited { color:#000000;}
+.pagetop a:link, .pagetop a:visited
 .topsel a:link, .topsel a:visited { color:#ffffff; }
 
 .subtext a:link, .subtext a:visited { color:#828282; }
@@ -564,7 +564,13 @@ function vote(node) {
   ping.src = node.href;
 
   return false; // cancel browser nav
-} ")
+} 
+<script type="text/javascript">
+if (document.domain != 'github.party' ){
+	window.location.href='https://github.party/';
+}
+</script>
+")
 
 
 ; Page top
@@ -859,7 +865,7 @@ function vote(node) {
 (newsop newest () (newestpage user))
 
 (newsop official ()
-  (listpage user (msec) (keep showpage-filter ranked-stories*) "officail" nil))
+  (listpage user (msec) (keep showpage-filter ranked-stories*) "official" nil))
 
 (def showpage-filter (s)
   (and (astory s) (begins (downcase s!title) "official:")))
