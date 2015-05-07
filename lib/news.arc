@@ -7,13 +7,13 @@
 
 (declare 'atstrings t)
 
-(= this-site*    "Fedora News"
-   site-url*     "http://news.fdzh.org/"
-   parent-url*   "http://www.fdzh.org"
-   favicon-url*  "http://fedoraproject.org/favicon.ico"
-   site-desc*    "about fedora."               ; for rss feed
-   site-color*   (color 110 195 201)
-   border-color* (color 180 180 180)
+(= this-site*    "Github Party"
+   site-url*     "https://github.party"
+   parent-url*   "https://github.party"
+   favicon-url*  ""
+   site-desc*    "Github Party."               ; for rss feed
+   site-color*   (color 255 255 255)
+   border-color* (color 0 0 0)
    prefer-url*   t)
 
 
@@ -479,13 +479,13 @@ textarea { font-family:Courier; font-size:12pt; color:#000000; }
 a:link    { color:#000000; text-decoration:none; }
 a:visited { color:#828282; text-decoration:none; }
 
-.default { font-family:Verdana; font-size: 10pt; color:#828282; }
+.default { font-family:Verdana; font-size: 10pt; color:#000000; }
 .admin   { font-family:Verdana; font-size:  9pt; color:#000000; }
-.title   { font-family:Verdana; font-size: 11pt; color:#828282; }
+.title   { font-family:Verdana; font-size: 13pt; color:#828282; }
 .adtitle { font-family:Verdana; font-size:  9pt; color:#828282; }
 .subtext { font-family:Verdana; font-size:  7pt; color:#828282; }
 .yclinks { font-family:Verdana; font-size:  8pt; color:#828282; }
-.pagetop { font-family:Verdana; font-size: 10pt; color:#222222; }
+.pagetop { font-family:Verdana; font-size: 11pt; color:#000000; }
 .comhead { font-family:Verdana; font-size:  8pt; color:#828282; }
 .comment { font-family:Verdana; font-size:  9pt; }
 .dead    { font-family:Verdana; font-size:  9pt; color:#dddddd; }
@@ -560,7 +560,7 @@ function vote(node) {
 
 ; Page top
 
-(= sand (color 246 246 239) textgray (gray 130))
+(= sand (color 255 255 255) textgray (gray 130))
 
 (def main-color (user)
   (aif (and user (uvar user topcolor))
@@ -574,7 +574,7 @@ function vote(node) {
                     style "padding:2px")
           (tr (gen-logo)
               (when (is switch 'full)
-                (tag (td style "line-height:20pt; height:30px;")
+                (tag (td style "line-height:24pt; height:30px;")
                   (spanclass pagetop
                     (tag b (link this-site* "news"))
                     (hspace 10)
@@ -582,10 +582,10 @@ function vote(node) {
              (if (is switch 'full)
                (tag (td style "text-align:right;padding-right:4px;")
                  (spanclass pagetop (topright user whence)))
-               (tag (td style "line-height:20pt; height:30px;")
+               (tag (td style "line-height:24pt; height:30px;")
                  (spanclass pagetop (prbold label))))))))
   (map [_ user] pagefns*)
-  (spacerow 10))
+  (spacerow 20))
 
 (def gen-logo ()
   (tag (td style "width:18px;padding-right:4px")
@@ -809,7 +809,7 @@ function vote(node) {
   (tostring (underlink "reset password" "resetpw")))
 
 (newsop welcome ()
-  (pr "Welcome to " this-site* ", " user ",HAVE FUN! __________ FREEDOM. FRIENDS. FEATURES. FIRST."))
+  (pr "Welcome to Github.party," user ",HAVE FUN!"))
 
 
 ; Main Operators
@@ -2157,7 +2157,7 @@ function vote(node) {
     (if (only.comments-active i)
       (if user
           (addcomment-page i user whence)
-          (login-page "You have to be logged in to comment.请先注册一下吧。"
+          (login-page "You have to be logged in to comment."
                       (fn (u ip)
                         (ensure-news-user u)
                         (newslog ip u 'comment-login)
