@@ -10,7 +10,7 @@
 (= this-site*    "Github Party"
    site-url*     "https://github.party"
    parent-url*   "https://github.party"
-   favicon-url*  ""
+   favicon-url*  "favicon.ico"
    site-desc*    "Github Party."               ; for rss feed
    site-color*   (color 255 255 255)
    border-color* (color 0 0 0)
@@ -402,7 +402,7 @@
          (tag (table border 0 cellpadding 0 cellspacing 0 width "85%"
                      bgcolor sand)
            ,@body)
-(prn "<script>
+(prn "<a href='https://github.party/item?id=5'>FAQ</a>  <br> All rights belong to GOD <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -475,8 +475,9 @@
 
 (defop news.css req
   (pr "
-body  { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#828282;width:780px; margin:6px auto;  }
-td    { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#828282; padding-left:3px;}
+* {margin:0;padding:0;}
+body  { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#828282;  }
+td    { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#828282; padding-left:8px;}
 
 .admin td   { font-family:Verdana; font-size:8.5pt; color:#000000; }
 .subtext td { font-family:Verdana; font-size:  7pt; color:#828282; }
@@ -502,7 +503,8 @@ a:visited { color:#828282; text-decoration:none; }
 .comment a:link, .comment a:visited { text-decoration:underline;}
 .dead a:link, .dead a:visited { color:#dddddd; }
 .pagetop a:link, .pagetop a:visited
-.topsel a:link, .topsel a:visited { color:#ffffff; }
+.topsel a:link { color:#000; }
+.topsel a:visited { text-decoration:underline; }
 
 .subtext a:link, .subtext a:visited { color:#828282; }
 .subtext a:hover { text-decoration:underline; }
@@ -565,11 +567,9 @@ function vote(node) {
 
   return false; // cancel browser nav
 } 
-<script type="text/javascript">
 if (document.domain != 'github.party' ){
 	window.location.href='https://github.party/';
 }
-</script>
 ")
 
 
@@ -585,7 +585,7 @@ if (document.domain != 'github.party' ){
 (def pagetop (switch lid label (o title) (o user) (o whence))
 ; (tr (tdcolor black (vspace 5)))
   (tr (tdcolor (main-color user)
-        (tag (table border 0 cellpadding 0 cellspacing 0 width "100%"
+        (tag (table border 0 cellpadding 0 cellspacing 0 width "80%"
                     style "padding:2px")
           (tr (gen-logo)
               (when (is switch 'full)
@@ -606,7 +606,7 @@ if (document.domain != 'github.party' ){
   (tag (td style "width:18px;padding-right:4px")
     (tag (a href parent-url*)
       (tag (img src logo-url* width 18 height 18
-                style "border:1px #@(hexrep border-color*) solid;")))))
+                style "border:1px #@(hexrep border-color*) ;")))))
 
 (= toplabels* '(nil "welcome" "new" "ask" "threads" "comments" "official" "leaders" "*"))
 
@@ -2641,4 +2641,3 @@ first asterisk isn't whitespace.
     (tab
       (each c (dedup (map downcase (trues [uvar _ topcolor] (users))))
         (tr (td c) (tdcolor (hex>color c) (hspace 30)))))))
-
