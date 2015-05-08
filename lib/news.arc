@@ -10,7 +10,7 @@
 (= this-site*    "Github Party"
    site-url*     "https://github.party"
    parent-url*   "https://github.party"
-   favicon-url*  "favicon.ico"
+   favicon-url*  "./favicon.ico"
    site-desc*    "Github Party."               ; for rss feed
    site-color*   (color 255 255 255)
    border-color* (color 0 0 0)
@@ -383,7 +383,6 @@
 
 (= up-url* "grayarrow.png" down-url* "graydown.gif" logo-url* "arc.png")
 
-(defopr favicon.ico req favicon-url*)
 
 (def gen-css-url ()
   (prn "<link rel=\"stylesheet\" type=\"text/css\" href=\"news.css\">"))
@@ -392,7 +391,7 @@
   `(tag html
      (tag head
        (gen-css-url)
-       (prn "<link rel=\"shortcut icon\" href=\"" favicon-url* "\">")
+       (prn "<link rel=\"shortcut icon\" href=\"favicon.ico\">")
        (prn "<meta name=\"viewport\" content=\"width=device-width\">")
        (tag script (pr votejs*))
        (tag title (pr ,title)))
@@ -402,7 +401,7 @@
          (tag (table border 0 cellpadding 0 cellspacing 0 width "85%"
                      bgcolor sand)
            ,@body)
-(prn "<a href='https://github.party/item?id=5'>FAQ</a>  <br> All rights belong to GOD <script>
+(prn "<a href='https://github.party/item?id=5'>FAQ</a> | <a href='https://github.party/bookmarklet.html'>Bookmarklet</a>  <br>  © All rights belong to GOD <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -477,13 +476,13 @@
   (pr "
 * {margin:0;padding:0;}
 body  { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#828282;  }
-td    { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#828282; padding-left:8px;}
+td    { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#000; padding-left:8px;}
 
 .admin td   { font-family:Verdana; font-size:8.5pt; color:#000000; }
 .subtext td { font-family:Verdana; font-size:  7pt; color:#828282; }
 
 input    { font-family:Courier; font-size:12pt; color:#000000; }
-input[type=\"submit\"] { font-family:Verdana; }
+input[type=\"submit\"] { font-family:Verdana; color: #ff6600; }
 textarea { font-family:Courier; font-size:12pt; color:#000000; }
 
 a:link    { color:#000000; text-decoration:none; }
@@ -495,21 +494,25 @@ a:visited { color:#828282; text-decoration:none; }
 .adtitle { font-family:Verdana; font-size:  9pt; color:#828282; }
 .subtext { font-family:Verdana; font-size:  7pt; color:#828282; }
 .yclinks { font-family:Verdana; font-size:  8pt; color:#828282; }
-.pagetop { font-family:Verdana; font-size: 11pt; color:#000000; }
+.pagetop { font-family:Verdana; font-size: 11pt; color:#3ED3DF; }
 .comhead { font-family:Verdana; font-size:  8pt; color:#828282; }
 .comment { font-family:Verdana; font-size:  9pt; }
 .dead    { font-family:Verdana; font-size:  9pt; color:#dddddd; }
 
 .comment a:link, .comment a:visited { text-decoration:underline;}
 .dead a:link, .dead a:visited { color:#dddddd; }
-.pagetop a:link, .pagetop a:visited
-.topsel a:link { color:#000; }
-.topsel a:visited { text-decoration:underline; }
+.pagetop a:link, .pagetop a:visited { color:#000000; }
+.topsel a:link, .topsel a:visited , .topsel a:hover { color:#000; text-decoration:underline; }
 
-.subtext a:link, .subtext a:visited { color:#828282; }
+
+.subtext a:link, .subtext a:visited { color:#35A6D7; }
 .subtext a:hover { text-decoration:underline; }
 
-.comhead a:link, .subtext a:visited { color:#828282; }
+a[href='submit'] {
+color: #ff6600 !important;
+} 
+
+.comhead a:link, .subtext a:visited { color:#35A6D7; }
 .comhead a:hover { text-decoration:underline; }
 
 .default p { margin-top: 8px; margin-bottom: 0px; }
@@ -523,8 +526,8 @@ pre:hover {overflow:auto}
   body { margin:0; }
   body > center > table { width:100%; }
   body > center > table > tbody  > tr:nth-child(1) > td > table td .pagetop b { display:block }
-  body > center > table > tbody  > tr:nth-child(1) > td > table td .pagetop img { display:none }
-}"))
+  body > center > table > tbody  > tr:nth-child(1) > td > table td .pagetop img { display:none }}
+"))
 
 ; only need pre padding because of a bug in Mac Firefox
 
@@ -1020,7 +1023,7 @@ if (document.domain != 'github.party' ){
           (pdflink url)
           (awhen (sitename url)
             (spanclass comhead
-              (pr " (" )
+              (pr "  " )
               (if (admin user)
                 (w/rlink (do (set-site-ban user
                                            it
@@ -1035,7 +1038,7 @@ if (document.domain != 'github.party' ){
                                               kill   darkblue))
                       (pr it))))
                 (pr it))
-              (pr ") "))))
+              (pr ""))))
       (pr (pseudo-text s)))))
 
 (def titlelink (s url user)
