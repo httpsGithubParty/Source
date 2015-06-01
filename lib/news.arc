@@ -401,7 +401,7 @@
          (tag (table border 0 cellpadding 0 cellspacing 0 width "85%"
                      bgcolor sand)
            ,@body)
-(prn "<a href='https://github.party/item?id=5'>FAQ</a> | <a href='https://github.party/bookmarklet.html'>Bookmarklet</a>  <br>  © All rights belong to GOD <script>
+(prn "<a href='https://github.party/item?id=5'>FAQ</a> | <a href='https://github.party/bookmarklet.html'>Bookmarklet</a> | <a href='https://github.com/httpsgithubparty' target='_blank'>Github</a> <br>  © All rights belong to GOD <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -474,20 +474,24 @@
 
 (defop news.css req
   (pr "
-* {margin:0;padding:0;}
-body  { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#828282;  }
-td    { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#000; padding-left:8px;}
 
-.admin td   { font-family:Verdana; font-size:8.5pt; color:#000000; }
-.subtext td { font-family:Verdana; font-size:  7pt; color:#828282; }
+* {margin:0;padding:0;background: url(//dn-githubparty.qbox.me/guzhou.jpeg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;}
 
-input    { font-family:Courier; font-size:12pt; color:#000000; }
-input[type=\"submit\"] { font-family:Verdana; color: #ff6600; }
+body { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#828282; }
+td { font-family:'Helvetica Neue',Verdana; font-size:12pt; color:#000; padding-left:8px;}
+.admin td { font-family:Verdana; font-size:8.5pt; color:#000000; }
+.subtext td { font-family:Verdana; font-size: 7pt; color:#828282; }
+code {color:fff !important}
+input { font-family:Courier; font-size:12pt; color:#000000; }
+input[type="submit"] { font-family:Verdana; color: #ff6600; }
 textarea { font-family:Courier; font-size:12pt; color:#000000; }
-
-a:link    { color:#000000; text-decoration:none; }
-a:visited { color:#828282; text-decoration:none; }
-
+a:link { color:#000000; text-decoration:none; }
+a:visited { color:#fff; text-decoration:none; }
+a:hover {text-decoration:underline}
 .default { font-family:Verdana; font-size: 10pt; color:#000000; }
 .admin   { font-family:Verdana; font-size:  9pt; color:#000000; }
 .title   { font-family:Verdana; font-size: 13pt; color:#828282; }
@@ -495,7 +499,7 @@ a:visited { color:#828282; text-decoration:none; }
 .subtext { font-family:Verdana; font-size:  7pt; color:#828282; }
 .yclinks { font-family:Verdana; font-size:  8pt; color:#828282; }
 .pagetop { font-family:Verdana; font-size: 11pt; color:#3ED3DF; }
-.comhead { font-family:Verdana; font-size:  8pt; color:#828282; }
+.comhead { font-family:Verdana; font-size:  8pt; color:#3c963c !important; }
 .comment { font-family:Verdana; font-size:  9pt; }
 .dead    { font-family:Verdana; font-size:  9pt; color:#dddddd; }
 
@@ -509,10 +513,10 @@ a:visited { color:#828282; text-decoration:none; }
 .subtext a:hover { text-decoration:underline; }
 
 a[href='submit'] {
-color: #ff6600 !important;
+color: #35a6d7 !important;
 } 
 
-.comhead a:link, .subtext a:visited { color:#35A6D7; }
+.subtext a:visited { color:#35A6D7; }
 .comhead a:hover { text-decoration:underline; }
 
 .default p { margin-top: 8px; margin-bottom: 0px; }
@@ -570,9 +574,6 @@ function vote(node) {
 
   return false; // cancel browser nav
 } 
-if (document.domain != 'github.party' ){
-	window.location.href='https://github.party/';
-}
 ")
 
 
@@ -611,7 +612,7 @@ if (document.domain != 'github.party' ){
       (tag (img src logo-url* width 18 height 18
                 style "border:1px #@(hexrep border-color*) ;")))))
 
-(= toplabels* '(nil "welcome" "new" "ask" "threads" "comments" "official" "leaders" "*"))
+(= toplabels* '(nil "welcome" "official" "comments" "new" "ask" "threads" "leaders" "*"))
 
 (= welcome-url* "welcome")
 
@@ -619,12 +620,12 @@ if (document.domain != 'github.party' ){
   (w/bars
     (when (noob user)
       (toplink "welcome" welcome-url* label))
+    (toplink "official" "official" label)
+    (toplink "comments" "newcomments" label)
     (toplink "new" "newest" label)
     (toplink "ask" "ask" label)
     (when user
       (toplink "threads" (threads-url user) label))
-    (toplink "comments" "newcomments" label)
-    (toplink "official" "official" label)
     (toplink "leaders"  "leaders"     label)
     (hook 'toprow user label)
     (link "submit")
@@ -827,7 +828,7 @@ if (document.domain != 'github.party' ){
   (tostring (underlink "reset password" "resetpw")))
 
 (newsop welcome ()
-  (pr "Welcome to Github.party," user ",HAVE FUN!"))
+  (pr "Welcome to the Party," user ", Please check out FAQ (bottom of Home Page) for more infomation.Have fun!"))
 
 
 ; Main Operators
